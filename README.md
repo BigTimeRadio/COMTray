@@ -28,6 +28,17 @@ The tray icon always shows the number of the most recent port.
 - **Non-USB ports** (onboard serial, Bluetooth virtual ports) are still detected and
   announced; they just have no USB socket to name.
 
+## Install
+
+With winget, once a release is published:
+
+```powershell
+winget install W1BTR.COMTray
+```
+
+Otherwise grab `ComTray-<version>.msi` from the releases page and run it, or use the
+portable `ComTray.exe` with no install at all.
+
 ## Tray menu
 
 - The latest COM port number
@@ -48,9 +59,33 @@ This produces a standalone `dist\ComTray.exe` with the runtime bundled in, so it
 any 64-bit Windows machine with nothing else installed. For development, `dotnet run
 --project src\ComTray` works too.
 
+## Installer
+
+```powershell
+installer\build-installer.ps1
+```
+
+Publishes the exe and wraps it in `dist\ComTray-<version>.msi` (per-machine install to
+Program Files, Start Menu shortcut, proper upgrade and uninstall). Building the MSI needs
+the WiX v5 tool:
+
+```powershell
+dotnet tool install --global wix --version 5.0.2
+```
+
 ## Run at startup
 
 Use **Start with Windows** in the tray menu. It registers the exe under
-`HKCU\Software\Microsoft\Windows\CurrentVersion\Run`. Keep `ComTray.exe` somewhere stable
-(for example `%LOCALAPPDATA%\ComTray`) before enabling it, since the registry entry points
-at the exe's current location.
+`HKCU\Software\Microsoft\Windows\CurrentVersion\Run`. The MSI installs to a fixed
+Program Files path, so the startup entry stays valid across reboots.
+
+## Releasing for winget
+
+1. `installer\build-installer.ps1` to build the MSI.
+2. `installer\make-winget-manifest.ps1` to refresh the manifests under `winget\manifests`
+   with the MSI's real version, SHA256, ProductCode and download URL.
+3. Create a GitHub release tagged `v<version>` and upload that exact MSI (the manifest
+   hash only matches the file it was generated from).
+4. Submit the three YAML files in `winget\manifests\w\W1BTR\COMTray\<version>` to
+   [microsoft/winget-pkgs](https://github.com/microsoft/winget-pkgs), or test locally with
+   `winget install --manifest winget\manifests\w\W1BTR\COMTray\<version>`.

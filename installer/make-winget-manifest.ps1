@@ -24,9 +24,9 @@ function Get-MsiProperty($path, $name) {
     $wi = New-Object -ComObject WindowsInstaller.Installer
     $db = $wi.GetType().InvokeMember("OpenDatabase", "InvokeMethod", $null, $wi, @($path, 0))
     $view = $db.GetType().InvokeMember("OpenView", "InvokeMethod", $null, $db, @("SELECT Value FROM Property WHERE Property='$name'"))
-    $view.GetType().InvokeMember("Execute", "InvokeMethod", $null, $view, $null)
+    [void]$view.GetType().InvokeMember("Execute", "InvokeMethod", $null, $view, $null)
     $rec = $view.GetType().InvokeMember("Fetch", "InvokeMethod", $null, $view, $null)
-    $rec.GetType().InvokeMember("StringData", "GetProperty", $null, $rec, @(1))
+    ($rec.GetType().InvokeMember("StringData", "GetProperty", $null, $rec, @(1))).Trim()
 }
 
 $version = Get-MsiProperty $Msi "ProductVersion"
