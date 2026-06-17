@@ -9,12 +9,7 @@ $msi  = Join-Path $root "dist\ComTray-$Version.msi"
 # Make sure the published exe the MSI wraps is current.
 & (Join-Path $root "build.ps1")
 
-$icon = Join-Path $PSScriptRoot "comtray.ico"
-if (-not (Test-Path $icon)) {
-    & (Join-Path $PSScriptRoot "make-icon.ps1")
-}
-
-wix build (Join-Path $PSScriptRoot "ComTray.wxs") -arch x64 -d DistDir="$root\dist" -bindpath $PSScriptRoot -o $msi
+wix build (Join-Path $PSScriptRoot "ComTray.wxs") -arch x64 -d DistDir="$root\dist" -d RepoDir="$root" -o $msi
 
 $hash = (Get-FileHash $msi -Algorithm SHA256).Hash
 Write-Host ""

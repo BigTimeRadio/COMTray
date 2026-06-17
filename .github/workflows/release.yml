@@ -1,0 +1,65 @@
+name: Release
+
+on:
+  push:
+    tags: [ 'v*' ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-sign-release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Install WiX
+        run: dotnet tool install --global wix --version 5.0.2
+
+      - name: Build MSI
+        shell: pwsh
+        run: |
+          $env:PATH += ";$env:USERPROFILE\.dotnet\tools"
+          ./installer/build-installer.ps1
+
+      - name: Upload unsigned MSI
+        id: unsigned
+        uses: actions/upload-artifact@v4
+        with:
+          name: msi-unsigned
+          path: dist/ComTray-*.msi
+
+      - name: Sign with SignPath
+        uses: signpath/github-action-submit-signing-request@v1
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: comtray
+          signing-policy-slug: release-signing
+          artifact-configuration-slug: msi
+          github-artifact-id: ${{ steps.unsigned.outputs.artifact-id }}
+          wait-for-completion: true
+          output-artifact-directory: dist-signed
+
+      - name: Refresh winget manifest from signed MSI
+        shell: pwsh
+        run: |
+          $signed = Get-ChildItem dist-signed -Filter *.msi | Select-Object -First 1
+          ./installer/make-winget-manifest.ps1 -Msi $signed.FullName
+
+      - name: Upload winget manifests
+        uses: actions/upload-artifact@v4
+        with:
+          name: winget-manifests
+          path: winget/manifests/**
+
+      - name: Publish release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist-signed/*.msi

@@ -11,7 +11,7 @@ UpgradeBehavior: install
 Installers:
   - Architecture: x64
     InstallerUrl: https://github.com/BigTimeRadio/COMTray/releases/download/v1.0.0/ComTray-1.0.0.msi
-    InstallerSha256: 7414E23740E9E1B640BEC6E505094470A5998EC8A2BA514F714473A6DBB202BB
-    ProductCode: '{7831E1FD-0D3A-43CC-BBD5-0C69908DAA56}'
+    InstallerSha256: 8AEAB592D210D2C5BD0E87FA0359776924668E7175C9566CD2512CF507E65084
+    ProductCode: '{D20A77E2-2B7D-4FE5-A6F7-CFC96C7D40B8}'
 ManifestType: installer
 ManifestVersion: 1.6.0

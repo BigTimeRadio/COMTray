@@ -81,11 +81,14 @@ Program Files path, so the startup entry stays valid across reboots.
 
 ## Releasing for winget
 
-1. `installer\build-installer.ps1` to build the MSI.
-2. `installer\make-winget-manifest.ps1` to refresh the manifests under `winget\manifests`
-   with the MSI's real version, SHA256, ProductCode and download URL.
-3. Create a GitHub release tagged `v<version>` and upload that exact MSI (the manifest
-   hash only matches the file it was generated from).
-4. Submit the three YAML files in `winget\manifests\w\W1BTR\COMTray\<version>` to
-   [microsoft/winget-pkgs](https://github.com/microsoft/winget-pkgs), or test locally with
-   `winget install --manifest winget\manifests\w\W1BTR\COMTray\<version>`.
+Releases are built and code-signed in GitHub Actions (`.github/workflows/release.yml`).
+Push a `v<version>` tag and the workflow builds the MSI, signs it via SignPath, attaches
+the signed installer to a GitHub release, and produces refreshed winget manifests as a
+build artifact to submit to [microsoft/winget-pkgs](https://github.com/microsoft/winget-pkgs).
+
+Signing is required for `winget install` to work cleanly: Windows blocks unsigned,
+no-reputation installers during its download check, which aborts winget before it runs.
+See [docs/SIGNING.md](docs/SIGNING.md) for the SignPath setup and the full release steps.
+
+For a local unsigned build (development only), `installer\build-installer.ps1` produces
+the MSI and `installer\make-winget-manifest.ps1` refreshes the manifests to match it.

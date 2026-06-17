@@ -1,6 +1,6 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
   <Package
-      Name="COM Port Tray"
+      Name="COMTray"
       Manufacturer="W1BTR"
       Version="1.0.0"
       UpgradeCode="8F4A2C90-3B7E-4D21-9A6F-1E5C8D2B4A77"
@@ -9,12 +9,12 @@
     <MajorUpgrade DowngradeErrorMessage="A newer version of COM Port Tray is already installed." />
     <MediaTemplate EmbedCab="yes" />
 
-    <Icon Id="ComTrayIcon" SourceFile="comtray.ico" />
+    <Icon Id="ComTrayIcon" SourceFile="$(var.RepoDir)\Icon.ico" />
     <Property Id="ARPPRODUCTICON" Value="ComTrayIcon" />
     <Property Id="ARPHELPLINK" Value="https://github.com/BigTimeRadio/COMTray" />
 
     <StandardDirectory Id="ProgramFiles64Folder">
-      <Directory Id="INSTALLFOLDER" Name="COM Port Tray">
+      <Directory Id="INSTALLFOLDER" Name="COMTray">
         <Component Id="MainExecutable">
           <File Id="ComTrayExe" Source="$(var.DistDir)\ComTray.exe" KeyPath="yes" />
         </Component>
@@ -24,9 +24,11 @@
     <StandardDirectory Id="ProgramMenuFolder">
       <Component Id="StartMenuShortcut" Guid="A1B2C3D4-E5F6-4789-9ABC-DEF012345678">
         <Shortcut Id="AppShortcut"
-                  Name="COM Port Tray"
+                  Name="COMTray"
                   Target="[INSTALLFOLDER]ComTray.exe"
-                  WorkingDirectory="INSTALLFOLDER" />
+                  WorkingDirectory="INSTALLFOLDER"
+                  Icon="ComTrayIcon"
+                  IconIndex="0" />
         <RemoveFolder Id="CleanupProgramMenu" On="uninstall" />
         <RegistryValue Root="HKCU" Key="Software\ComTray" Name="installed" Type="integer" Value="1" KeyPath="yes" />
       </Component>
