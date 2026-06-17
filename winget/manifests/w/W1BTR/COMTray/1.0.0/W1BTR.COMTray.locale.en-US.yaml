@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.defaultLocale.1.6.0.schema.json
+PackageIdentifier: W1BTR.COMTray
+PackageVersion: 1.0.0
+PackageLocale: en-US
+Publisher: W1BTR
+PublisherUrl: https://github.com/BigTimeRadio
+PublisherSupportUrl: https://github.com/BigTimeRadio/COMTray/issues
+PackageName: COM Port Tray
+PackageUrl: https://github.com/BigTimeRadio/COMTray
+License: MIT
+Copyright: Copyright (c) 2026 W1BTR
+ShortDescription: Tray monitor that announces new COM ports and the USB socket each one uses.
+Description: >-
+  COM Port Tray is a lightweight Windows system tray utility that watches for serial (COM)
+  ports appearing and disappearing. When a new port arrives it shows a notification naming
+  the device and the physical USB socket it is plugged into, and the tray icon always shows
+  the most recent COM number. You can give each USB socket a friendly name. It is event
+  driven, so it stays idle until devices actually change.
+Moniker: comtray
+Tags:
+  - serial
+  - com-port
+  - usb
+  - tray
+  - ham-radio
+ManifestType: defaultLocale
+ManifestVersion: 1.6.0

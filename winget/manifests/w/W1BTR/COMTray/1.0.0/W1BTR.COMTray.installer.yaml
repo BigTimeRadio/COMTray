@@ -1,0 +1,17 @@
+# yaml-language-server: $schema=https://aka.ms/winget-manifest.installer.1.6.0.schema.json
+PackageIdentifier: W1BTR.COMTray
+PackageVersion: 1.0.0
+InstallerType: wix
+Scope: machine
+InstallModes:
+  - interactive
+  - silent
+  - silentWithProgress
+UpgradeBehavior: install
+Installers:
+  - Architecture: x64
+    InstallerUrl: https://github.com/BigTimeRadio/COMTray/releases/download/v1.0.0/ComTray-1.0.0.msi
+    InstallerSha256: 87A3448BAF0F896F7B0439D55886AF01D48FD3F33F498593EA372522DBBA06F4
+    ProductCode: '{71A67057-E9CF-4AF4-8A28-6D17E8EDECF2}'
+ManifestType: installer
+ManifestVersion: 1.6.0
