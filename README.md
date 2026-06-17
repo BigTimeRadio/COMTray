@@ -1,5 +1,7 @@
 # COM Port Tray
 
+<img width="395" height="219" alt="image" src="https://github.com/user-attachments/assets/044322eb-8b90-46c8-ab5e-08b0444772cd" />
+
 A small Windows system tray tool that watches for serial (COM) ports appearing and
 disappearing. When a new port shows up it pops a notification such as
 
